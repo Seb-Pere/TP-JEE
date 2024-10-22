@@ -15,50 +15,55 @@ import java.util.List;
 @RequestMapping("/trainers")
 public class TrainerController {
 
-	private final TrainerService trainerService;
+    private final TrainerService trainerService;
 
-	@Autowired
-	public TrainerController(TrainerService trainerService) {
-		this.trainerService = trainerService;
-	}
+    @Autowired
+    public TrainerController(TrainerService trainerService) {
+        this.trainerService = trainerService;
+    }
 
-	@GetMapping
-	public ResponseEntity<List<Trainer>> findAll() {
-		return new ResponseEntity<>(trainerService.findAll(), HttpStatus.OK);
-	}
+    // GET all trainers
+    @GetMapping
+    public ResponseEntity<List<Trainer>> findAll() {
+        return new ResponseEntity<>(trainerService.findAll(), HttpStatus.OK);
+    }
 
-	@GetMapping("/{id}")
-	public ResponseEntity<Trainer> findById(@PathVariable String id) {
-		Trainer trainer = trainerService.findById(id);
-		if (trainer == null) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-		return new ResponseEntity<>(trainer, HttpStatus.OK);
-	}
+    // GET trainer by ID
+    @GetMapping("/{id}")
+    public ResponseEntity<Trainer> findById(@PathVariable String id) {
+        Trainer trainer = trainerService.findById(id);
+        if (trainer == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(trainer, HttpStatus.OK);
+    }
 
-	@PostMapping
-	public ResponseEntity<?> save(@RequestBody CreateTrainer trainer) {
-		trainerService.save(trainer);
-		return new ResponseEntity<>(HttpStatus.CREATED);
-	}
+    // POST create new trainer
+    @PostMapping
+    public ResponseEntity<?> save(@RequestBody CreateTrainer createTrainer) {
+        Trainer trainer = trainerService.save(createTrainer);
+        return new ResponseEntity<>(trainer, HttpStatus.CREATED);
+    }
 
-	@PatchMapping("/{id}")
-	public ResponseEntity<?> update(@PathVariable String id, @RequestBody UpdateTrainer trainerBody) {
-		Trainer trainer = trainerService.findById(id);
-		if (trainer == null) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-		trainerService.update(id, trainerBody);
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-	}
+    // PATCH update trainer
+    @PatchMapping("/{id}")
+    public ResponseEntity<?> update(@PathVariable String id, @RequestBody UpdateTrainer updateTrainer) {
+        Trainer trainer = trainerService.findById(id);
+        if (trainer == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        trainerService.update(id, updateTrainer);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 
-	@DeleteMapping("/{id}")
-	public ResponseEntity<?> delete(@PathVariable String id) {
-		Trainer trainer = trainerService.findById(id);
-		if (trainer == null) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-		trainerService.delete(id);
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-	}
+    // DELETE trainer
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable String id) {
+        Trainer trainer = trainerService.findById(id);
+        if (trainer == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        trainerService.delete(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }
